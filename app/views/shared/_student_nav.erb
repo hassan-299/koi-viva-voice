@@ -1,0 +1,44 @@
+<%= polaris_frame(
+  logo: {
+    url: "/",
+    src: "https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-color.svg",
+    width: "124px",
+  },
+  style: "background-color: white"
+) do |frame| %>
+  <% frame.with_top_bar do |top_bar| %>
+    <% top_bar.with_search_field do |search_field| %>
+      <%= polaris_text_field(placeholder: "Search", clear_button: true) %>
+    <% end %>
+    <%# top_bar.with_secondary_menu do |secondary_menu| %>
+      <%# polaris_icon(name: "QuestionCircleIcon") %>
+    <%# end %>
+    <% top_bar.with_user_menu(name: @current_user.full_name, detail: @current_user.role.titleize) do |user_menu| %>
+      <% user_menu.with_avatar(initials: @current_user.first_name[0]) %>
+      <%= polaris_action_list do |action_list| %>
+        <% action_list.with_item(icon: "PersonIcon", url: "#") { "Profile" } %>
+        <% action_list.with_item(icon: "ExitIcon", url: sign_out_path) { "Log out" } %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% frame.with_navigation do |navigation| %>
+    <% navigation.with_section do |section| %>
+      <% section.with_item(url: students_portal_path, label: "Dashboard", icon: "HomeIcon", selected: is_active_link?(students_portal_path, nil)) %>
+    <% end %>
+    <% navigation.with_section(title: "Education", separator: true) do |section| %>
+      <%# section.with_action(icon: "ChatIcon") %>
+      <% section.with_item(url: students_quizzes_path, label: "Quizzes", icon: "BookIcon", selected: is_active_link?(students_quizzes_path, nil)) %>
+      <% section.with_item(url: students_submitted_quizzes_path, label: "Submissions", icon: "ChartVerticalFilledIcon", selected: is_active_link?(students_submitted_quizzes_path, nil)) %>
+      <%# section.with_item(url: students_reports_path, label: "Reports", icon: "PersonIcon", selected: is_active_link?(students_reports_path, "reports")) %>
+      <%# section.with_item(url: students_videos_path, label: "Videos", icon: "PlayCircleIcon", selected: is_active_link?(students_videos_path, "videos")) %>
+    <% end %>
+    <% navigation.with_section(separator: true, style:"margin-top:auto; border-top: 1px solid rgba(0,0,0,0.1);") do |section| %>
+      <% section.with_item(url: "#", label: "Notifications", icon: "NotificationIcon", badge: "0" ) %>
+      <% section.with_item(url: "#", label: "Settings", icon: "SettingsIcon") %>
+      <%# section.with_item(url: sign_out_path, label: "Log out", icon: "ExitIcon") %>
+    <% end %>
+  <% end %>
+
+  <%# render "shared/flash" %>
+  <%= yield %>
+<% end %>

@@ -1,0 +1,22 @@
+div id="#{dom_id video}"
+  p
+    strong Title: 
+    = video.title
+  / p
+    strong Description:
+    = video.description || "N/A"
+  / p
+    strong Created at:
+    = video.created_at
+  p
+    strong Preview
+    = render "preview_video", attachment: video.file
+  / p
+    strong File:
+    = link_to video.file.filename, url_for(video.file)
+
+  / p
+    strong Preview:
+    iframe src=url_for(video.file) width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen
+
+  .mt-2

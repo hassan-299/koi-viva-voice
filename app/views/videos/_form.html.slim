@@ -1,0 +1,46 @@
+/ = form_with(model: @video, local: false, id: "video-form") do |form|
+  = polaris_text_field(form: form, attribute: :title, label: "Video Title", required: true)
+  = polaris_text_field(form: form, attribute: :description, label: "Video Description")
+
+  = polaris_stack(distribution: :equal_spacing, alignment: :center, classes: "mt-4") do
+    = polaris_button(text: "Start Recording", id: "start", primary: true) { "Start Video" }
+    = polaris_button(text: "Stop Recording", id: "stop", destructive: true) { "Stop and Save Video" }
+
+  = tag.video(nil, id: "live", class: "border border-black rounded-md mt-4", width: "300", height: "200", autoplay: true, muted: true)
+
+  = form.hidden_field :file
+
+= polaris_page(title: "New video", back_url: videos_path) do |page|
+  = render "shared/flash"
+  = form_with(model: Video.new, builder: Polaris::FormBuilder, html: { data: { turbo: true, controller: "form" } } ) do |f|
+    / - if video.errors.any?
+      div style="color: red"
+        h2 = "#{pluralize(video.errors.count, "error")} prohibited this video from being saved:"
+        ul
+          - video.errors.each do |error|
+            li = error.full_message
+    = polaris_form_layout(classes: 'mb-3') do |form_layout|
+      - form_layout.with_item
+        = f.polaris_text_field :title, required: true, placeholder: "Enter title"
+      - form_layout.with_item
+        = f.hidden_field :file
+        = polaris_card(sectioned: true) do
+          / = polaris_stack(distribution: :fill) do |stack|
+          = polaris_heading(level: 3) { "Record your video" }
+          = polaris_stack(wrap: false) do |stack|
+            - stack.with_item do
+              = tag.video(nil, id: "live", class: "border border-gray-300 rounded-md", width: "300", height: "200", autoplay: true, muted: true)
+            - stack.with_item do
+              = f.polaris_dropzone :file, as: :video, label: "Upload video", multiple: false, accept: 'video/*'
+
+          = polaris_button(text: "Start Video", id: "start", classes: "mt-2") { "Start Video" }
+          = polaris_button(text: "Stop Video", id: "stop", classes: "ml-2", destructive: true) { "Stop and Save Video" }
+          / .mt-2
+            = tag.video(nil, id: "live", class: "border border-gray-300 rounded-md", width: "300", height: "200", autoplay: true, muted: true)
+      / - form_layout.with_item
+        = f.polaris_dropzone :file, as: :video, label: "Upload video", multiple: false, accept: 'video/*'
+      - form_layout.with_item
+        = f.submit "#{params[:action] == 'new' ? 'Submit video' : 'Update video'}", class: "Polaris-Button mr-2 Polaris-Button--primary float-right"
+        / = f.submit "Record New Video", class: "Polaris-Button mr-2 Polaris-Button--primary float-right"
+        / = polaris_button(text: "Record New Video", url: new_video_path) { "Record New Video" }
+        / .my-5.border-t.border-gray-200

@@ -1,0 +1,32 @@
+- url = quiz.new_record? ? teachers_quizzes_path : teachers_quiz_path
+
+= form_with model: quiz, url: url, builder: Polaris::FormBuilder, html: { data: { turbo: false, target: "_top", controller: "polaris-modal form", action: "turbo:submit-end->form#closeModal" } } do |f|
+  = polaris_modal(title: "#{params[:action].titleize} Quiz", id: "remote-modal", open: true) do |modal|
+    = polaris_layout(classes: "mt-0") do |layout|
+      - layout.with_section do
+        = polaris_form_layout(classes: 'mb-3') do |form_layout|
+          - form_layout.with_item
+            = f.polaris_text_field :title, required: true, placeholder: "Enter title"
+          - form_layout.with_item
+            = f.polaris_text_field :description, required: false, multiline:true, rows: 6, placeholder: "Enter description"
+          - form_layout.with_item
+            = f.polaris_text_field :due_date, value: quiz.due_date || Date.current, input_options: { data: { controller: "flatpickr", flatpickr_min_date: Date.current } }, required: true
+          - form_layout.with_group do |group|
+            - group.with_item
+              = f.label :start_time
+              = f.text_field :start_time, value: (quiz.start_time.nil? ? Time.current.strftime("%H:%M") : quiz.start_time.strftime("%H:%M")), class: "flatpickr-input", placeholder: "Time", data: { controller: "flatpickr", flatpickr_enable_time: true, flatpickr_no_calendar: true, flatpickr_date_format: "h:i K", flatpickr_alt_input: false }
+            - group.with_item
+              = f.label :end_time
+              = f.text_field :end_time, value: (quiz.end_time.nil? ? Time.current.strftime("%H:%M") : quiz.end_time.strftime("%H:%M")), class: "flatpickr-input", placeholder: "Time", data: { controller: "flatpickr", flatpickr_enable_time: true, flatpickr_no_calendar: true, flatpickr_date_format: "h:i K", flatpickr_alt_input: false }
+          - form_layout.with_item do
+            = polaris_spacer(vertical: :tight)
+            = f.fields_for :questions do |question|
+              = render "question_fields", f: question
+            .links
+              = link_to_add_association f, :questions do 
+                = polaris_button(icon_name: "PlusCircleIcon") { "Add Question" } 
+          / - form_layout.with_item
+          /   = f.submit "#{params[:action] == 'new' ? 'Create' : 'Update'}", class: "Polaris-Button mr-2 Polaris-Button--primary float-right"
+        / - page.with_primary_action(submit: true, url: url, data: { turbo: false }) { "Save" }
+      - modal.with_primary_action(submit: true) { "Save" }
+      - modal.with_secondary_action(data: { action: "polaris-modal#close" }) { "Close" }

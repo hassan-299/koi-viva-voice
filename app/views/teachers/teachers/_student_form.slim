@@ -1,0 +1,18 @@
+- url = @student.new_record? ? teachers_add_student_path : teachers_update_student_path
+
+= form_with model: @student, url: url, builder: Polaris::FormBuilder, html: { data: { turbo: false, target: "_top", controller: "polaris-modal form", action: "turbo:submit-end->form#closeModal" } } do |f|
+  = polaris_modal(title: "#{params[:action].titleize} Student", id: "remote-modal", open: true) do |modal|
+    = polaris_layout(classes: "mt-0") do |layout|
+      - layout.with_section do
+        = polaris_form_layout(classes: 'mb-3') do |form_layout|
+          - form_layout.with_group do |group|
+            - group.with_item
+              = f.polaris_text_field :first_name, required: true, placeholder: "Enter title"
+            - group.with_item
+              = f.polaris_text_field :last_name, required: true, placeholder: "Enter title"
+          - form_layout.with_item
+            = f.polaris_text_field :email, label: "Email", required: true, type: :email
+          / - form_layout.with_item
+          /   = f.polaris_text_field :password, label: "Password", type: :password, required: true, help_text: "Create a strong password with at least 6 characters"
+      - modal.with_primary_action(submit: true) { "Save" }
+      - modal.with_secondary_action(data: { action: "polaris-modal#close" }) { "Close" }

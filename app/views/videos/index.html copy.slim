@@ -1,0 +1,20 @@
+/ = polaris_banner(status: :success, title: notice) if notice
+
+= polaris_page(title: t("Videos")) do |page|
+  - page.with_primary_action(url: new_video_path) { "Add new video" }
+  = render "shared/flash"
+  = polaris_layout do |layout|
+    - layout.with_section do
+      - @videos.each do |video|
+        = render video
+        = polaris_horizontal_stack(gap: '1') 
+          = polaris_button(icon_name: "ViewIcon", url: video_path(video), primary: true) { "Show video" }
+          = polaris_button(icon_name: "EditIcon", url: video_path(video)) { "Edit video" }
+          = polaris_button(icon_name: "DeleteIcon", url: video_path(video), destructive: true) { "Delete video" }
+        .my-2
+          = polaris_divider
+      
+      - if @videos.empty?
+        = render "shared/empty"
+
+      / = polaris_button(text: "New video", url: new_video_path, primary: true, full_width: true, class: "mt-4")

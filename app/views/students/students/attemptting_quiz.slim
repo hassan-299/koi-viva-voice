@@ -1,0 +1,21 @@
+- quiz = @quiz
+- question = @question
+= polaris_page(title: quiz.title, back_url: students_quizzes_path, subtitle: quiz.description.truncate(75), full_width: true) do |page|
+  - page.with_title_metadata do
+    = polaris_badge(status: :success) { "In Progress" }
+  - page.with_primary_action(url: students_submitted_path(id: quiz.id), icon_name: "CheckIcon", data: { turbo: false }) { "Submit" }
+
+  / - title = quiz.questions.any? ? "Status: 1/#{quiz.questions.count}" : "Status: 0/0"
+  - title = ""
+  = render "shared/flash"
+  = polaris_card(title: title) do |card|
+    / - card.with_section(border_bottom: true)
+      p.overflow-auto#question-time
+        | Total time: #{quiz.total_time} minutes | Question time: #{question&.duration || 0} minutes
+    = turbo_frame_tag "answer_section"
+      = render "answer_section", question: question, quiz: quiz, card: card
+
+    - card.with_primary_footer_action(url: students_submitted_path(id: quiz.id), icon_name: "CheckIcon", data: { turbo: false }) { "Submit" } if question&.is_last?
+    - card.with_primary_footer_action(url: students_attemptting_quiz_path(quiz, question.next_question), icon_name: "ArrowRightIcon") { "Next Question" } unless question&.is_last?
+    - card.with_secondary_footer_action(url: students_attemptting_quiz_path(quiz, question.previous_question), icon_name: "ArrowLeftIcon") { "Previous Question" } unless question&.is_first?
+    / - card.with_secondary_footer_action(url: "#", icon_name: "BackspaceIcon") { "Dismiss" }

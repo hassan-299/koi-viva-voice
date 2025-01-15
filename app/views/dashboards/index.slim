@@ -1,0 +1,34 @@
+/ = polaris_page(full_width: true) do
+  = polaris_layout(classes: "!mt-3") do |layout|
+    - layout.with_section do
+      = image_tag(asset_path("bg2.png"), classes: "w-full", style: "border-radius: 5%")
+    - layout.with_section(secondary: true) do
+      div.text-center.mt-32
+        h1.text-3xl.font-bold.text-gray-900 
+          | Welcome to Koi Viva Voice
+
+
+div style="backgroud-repeat:no-repeat;background-size:cover;background-image:url(#{asset_path("bg2.png")});height:100vh;"
+  = polaris_page(narrow_width: true, style:"height: 100vh; justify-content: center; align-items: center; width: 100vw;") do
+    = polaris_layout(classes: "layout-responsive") do |layout|
+      - layout.with_section(style:"box-shadow: 6px 12px 60px rgba(0,0,0,0.4); margin-top: 32%") do
+        = polaris_card(sectioned: false, title: "") do |card|
+          - card.with_section() do
+            = polaris_stack(vertical: :true, wrap: false) do |stack|
+              / - stack.with_item do
+                image src="#{asset_path("bg.jpg")}" width="150px" style="margin-top:20px;margin-bottom:20px;"
+              - stack.with_item do
+                = polaris_display_text(size: :medium, style: "font-weight:bold") { "Welcome to Koi Viva Voice! 👋" }
+              - stack.with_item(style:"margin-top:10px;") do
+                = polaris_text_style(variation: :subdued) { "Please sign-in to your account and start the adventure" }
+          - card.with_section(sectioned: false) do
+            = form_for(User.new, url: sign_in_path, builder: Polaris::FormBuilder, html:{data: { turbo: false }} ) do |f|
+              = render "shared/flash"
+              = polaris_spacer(vertical: :loose)
+              = f.errors_summary
+              = f.polaris_text_field :username, label: "Username / Email", required: true, style:"margin-bottom:20px;"
+              = f.polaris_text_field :password, label: "Password", type: :password, required: true
+              div style="margin-top:20px;" 
+                = polaris_button(submit: true, primary: true, full_width: true, style:"min-height:2.4rem; font-size:1.6rem !important; font-weight:bold", class:"Polaris-Button__Content") { "Login" }
+              div style="text-align:center;margin-top:10px;" 
+                = polaris_link(url: "#{sign_up_path}", no_underline: true) { "Create an account" }

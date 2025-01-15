@@ -1,0 +1,61 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import 'flatpickr/dist/flatpickr';
+
+.flatpickr-input {
+  @apply border border-gray-300 rounded-md p-2 w-full focus:ring-indigo-500 focus:border-indigo-500 block shadow-sm sm:text-sm;
+}
+
+.flash-message {
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 5px;
+  position: relative;
+}
+
+.flash-alert, .flash-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+.flash-notice, .flash-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+.flash-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+.flash-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.flash-message .close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ------------------------- polaris ------------------------------- */
+
+.Polaris-Text--headingXl { font-size: x-large !important; }
+.Polaris-Navigation__Text { font-size: medium !important; }
+/* .Polaris-Text--regular { font-size: medium !important; } */
+/* .Polaris-Connected { width: 120% !important; } */
+.Polaris-Text--headingMd { font-size: large !important; }
+
+.Polaris-Button { padding: 10px 20px !important; }
+.Polaris-Button--primary {
+  background-color: black;
+  border-color: black;
+}
+
+.truncate { max-width: 1px; }

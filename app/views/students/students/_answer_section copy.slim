@@ -1,0 +1,65 @@
+/ - card.with_section do
+  = polaris_text_container do
+    = question.title
+
+- if question.present?
+  = form_with(model: Video.new, builder: Polaris::FormBuilder, html: { data: { turbo: false, controller: "form" } } ) do |f|
+    / = f.submit "Save Answer", class: "Polaris-Button mr-2 Polaris-Button--primary float-right"
+    = polaris_form_layout(classes: 'mb-3') do |form_layout|
+      - form_layout.with_group do |group|
+        - group.with_item
+          = f.hidden_field :question_id, value: question.id
+          = f.polaris_text_field :answer, label_hidden: true, value: question&.answers&.where(student_id: @current_user.id)&.last&.answer, multiline: true, rows: 7, placeholder: "Enter your answer here"
+        - group.with_item
+          = f.polaris_dropzone :file, as: :video, label: "Upload video", multiple: false, accept: 'video/*'
+          / - url = cloudinary_url(question&.answers&.last&.video&.file&.blob&.key, resource_type: 'content_type: "video/quicktime"', format: "mov")
+          / - url = cloudinary_url_for(question&.answers&.last&.video&.file&.blob)
+          / - url = cloudinary_url(question&.answers&.where(student_id: @current_user.id)&.last&.video&.file&.blob&.key, resource_type: 'raw', format: "mp4") if question&.answers&.last&.video&.title.eql?("live")
+          / - url = cloudinary_url(question&.answers&.where(student_id: @current_user.id)&.last&.video&.file&.blob&.key, resource_type: 'video', format: "mov") unless question&.answers&.last&.video&.title.eql?("live")
+          - if question&.answers&.where(student_id: @current_user.id)&.last&.video&.file&.attached?
+            = polaris_link(url: url_for(question&.answers&.where(student_id: @current_user.id)&.last&.video&.file), target: "_blank") { "View Video" }
+          / | #{question&.answers&.last&.video&.file&.url}
+      / - form_layout.with_item
+        br
+        / = binding.pry
+        / = video_tag question&.answers&.last&.video&.file&.url
+        = link_to 'Link Text', url, html_options = {target: '_blank'}
+        / = link_to 'Watch Video', question&.answers&.last&.video&.file&.url, class: 'btn btn-primary', target: '_blank', rel: 'noopener'
+        / = polaris_button(url: question&.answers&.last&.video&.file&.url, text: "View Video", classes: "mb-1", style: "background-color: #51c35d; font-weight: bold; color: white") { "View Video" }
+
+    - card.with_section(title: "Question: #{question&.title || "Question"}", subdued: true) do
+      = polaris_text_container do
+        = question&.description || "Question description"
+
+    - card.with_section(title: "Solve the question", "x-data" => "{ open: false }") do
+      = polaris_button(text: "Toggle Video Options", classes: "mb-1", "@click" => "open = !open", style: "background-color: #51c35d; font-weight: bold; color: white") { "Record New Video" }
+      div x-show="open"
+        / = polaris_heading(level: 3) { "Record your video" }
+        / = polaris_spacer(vertical: :tight)
+        = polaris_stack(wrap: false) do |stack|
+          - stack.with_item do
+            = tag.video(nil, id: "live", class: "border border-gray-300 rounded-md", width: "300", height: "200", autoplay: true, muted: true)
+          / - stack.with_item do
+            = f.polaris_dropzone :file, as: :video, label: "Upload video", multiple: false, accept: 'video/*'
+
+        #video-recording-seconds
+        = polaris_button(text: "Start Video", id: "start", classes: "mt-2") { "Start Video" }
+        = polaris_button(text: "Stop Video", id: "stop", classes: "ml-2", destructive: true) { "Stop and Save Video" }
+    / = f.submit "#{params[:action] == 'new' ? 'Submit video' : 'Update video'}", class: "Polaris-Button mr-2 Polaris-Button--primary float-right"
+    = f.submit "Save Answer", class: "Polaris-Button mr-2 Polaris-Button--primary"
+    .mt-12
+    / - card.with_primary_footer_action(type: "submit", icon_name: "ArrowRightIcon") { "Next Question" }
+  / - card.with_section(title: "Note") do
+    = polaris_text_container do
+      | The sales reports are available only if your store is on the Shopify plan
+      | or higher.
+
+  / - card.with_primary_footer_action(url: "#", icon_name: "CheckIcon") { "Submit" }
+  / - card.with_primary_footer_action(url: "#", icon_name: "ArrowRightIcon") { "Next Question" }
+  / - card.with_secondary_footer_action(url: "#", icon_name: "ArrowLeftIcon") { "Previous Question" }
+  / - card.with_secondary_footer_action(url: "#", icon_name: "BackspaceIcon") { "Dismiss" }
+- else
+  = polaris_empty_state( heading: "No question is available yet", image: asset_path("emptystate-files.png")) do |state|
+    / - state.with_primary_action(url: new_teachers_quiz_path, data: { turbo_frame: "modal" }) { "Add Quiz" }
+    / - state.with_secondary_action(url: "#", data: { turbo_frame: "_top" }) { "Learn more" }
+    p There's no question generated yet. Try connecting to your teacher.

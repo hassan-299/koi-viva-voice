@@ -1,0 +1,39 @@
+= polaris_page(full_width: true) do |page|
+  = render "shared/flash"
+  / - page.with_primary_action(url: "#" ,"data-turbo-frame": 'modal') { t("Widget") } 
+
+  = polaris_layout do |layout|
+    - layout.with_section do
+      = polaris_callout_card( illustration: asset_path("dashboar-element.svg")) do |callout|
+        = polaris_display_text(size: :medium, style:"font-weight:bold") { "Get Started with Koi Viva Voice" }
+        = polaris_spacer(vertical: :extra_tight) 
+        = polaris_text_style(variation: :subdued) { "Maximize your educational experience with our step-by-step guidance for a seamless setup Get up and running in no time. Discover the power of Koi Viva Voice today!" }
+
+      / = polaris_card() do |card|
+        - card.with_section(sectioned: true) do
+          = polaris_stack(alignment: :center) do |stack|
+            - stack.with_item() do
+              = polaris_icon(name: "BookIcon", backdrop: true)
+            - stack.with_item(fill: true) do 
+              = polaris_heading() { "Schedule an onboarding session" }
+            - stack.with_item() do  
+              - name = "CircleTickMajor"
+              - variant = :success
+              = polaris_icon(name: name, color: variant)
+            - stack.with_item() do
+              = polaris_button(plain: true, data: {controller: "polaris", target:"#onbaording", action:"polaris#toggleCollapsible"}) do |button|
+                / - polaris_icon(name: "BookIcon", backdrop: true)
+                - button.with_icon(name: "ChevronDownIcon") { "Learn more" }
+          = polaris_collapsible(id: "onbaording", open: true) do
+            = polaris_spacer(vertical: :loose) 
+            hr
+            = polaris_spacer(vertical: :loose) 
+            = polaris_callout_card(title: "Streamline your Koi Viva Voice journey with a personalized onboarding session Get started efficiently and make the most of your experience", variation: :subdued,  illustration: asset_path("logo.jpg"), style:"box-shadow:none !important;padding-bottom:0px;") do |callout|
+              - callout.with_primary_action(url: "mailto:m.test@gmail.com", primary: true) { "Schedule a session" }
+              / - callout.with_secondary_action(url: "#", secondary: true) { "Mark as completed" }
+      = polaris_card(title: "Quiz Creation Summary") do |card|
+        = line_chart Quiz.group_by_day(:created_at).count, name: "Quizzes", height: "350px", options: {series: {smooth: true},toolbox: {feature: {saveAsImage: { show: true }}}}
+        / - card.with_section(title: "Quick Stats | Quiz Summary") do
+
+      = polaris_card(title: "Quiz Submissions") do |card|
+        = bar_chart Submission.group_by_day(:created_at).count, name: "Submissions", height: "350px", options: {series: {smooth: true},toolbox: {feature: {saveAsImage: { show: true }}}}

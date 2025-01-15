@@ -1,0 +1,17 @@
+.nested-fields
+  = polaris_spacer(vertical: :tight)
+  hr
+  = polaris_spacer(vertical: :tight)
+  = polaris_form_layout do |form_layout|
+    - form_layout.with_group do |group|
+      - group.with_item
+        = f.polaris_text_field :title, label: "Question Name", required: true, placeholder: "Enter name"
+      - group.with_item
+        = f.polaris_select(:duration, label: "Duration", select_options: { prompt: "Select minutes" }, options: (1..10).map { |num| [num, num.to_s] })
+    - form_layout.with_group do |group|
+      - group.with_item do
+        = f.polaris_text_field :description, label_hidden: true, multiline: true, rows: 2, required: true, placeholder: "Enter Question's description"
+      - group.with_item do
+        = link_to_remove_association f do 
+          = polaris_icon(name: "DeleteIcon", destructive: true, style: "margin-top: 6%;")
+  = polaris_spacer(vertical: :tight)

@@ -1,0 +1,6 @@
+- flash.each do |type, message|
+  - if message.present?
+    div class="flash-message flash-#{type}" data-controller="flash" data-action="click->flash#close"
+      = message
+      button type="button" class="close-button" data-action="flash#close" aria-label="Close"
+        span aria-hidden="true" &times;

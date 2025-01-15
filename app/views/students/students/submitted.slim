@@ -1,0 +1,10 @@
+= polaris_page(title: "#{@quiz.title || "Quizz"}", subtitle: "Congratulations! your quiz has been submitted") do | polaris_page |
+  - polaris_page.with_custom_primary_action do 
+    = polaris_horizontal_stack(gap: '2') do |stack|
+      = polaris_button(primary: true, icon_name: "HomeIcon", url: students_quizzes_path) { "View Quizzes" }
+  = polaris_layout do |layout| 
+    - layout.with_section do
+      = render "shared/flash"
+
+    - layout.with_section do
+      | #{@current_user.full_name}, your quizz has been submitted. Thank you!

@@ -1,0 +1,43 @@
+= polaris_page(title: "Submissions", subtitle: "List of all submissions", full_width: true) do | polaris_page |
+  - polaris_page.with_custom_primary_action do 
+    / = polaris_horizontal_stack(gap: '2') do |stack|
+      = polaris_button(primary: true, icon_name: "PlusIcon", url: new_teachers_quiz_path, data: { turbo_frame: "modal" }) { "Add Quiz" }
+      / = polaris_button(primary: true, icon_name: "PlusIcon", url: new_teachers_quiz_path, data: { turbo: true, turbo_frame: :modal } ) { "Add Quiz" }
+
+  = polaris_layout do |layout| 
+    - layout.with_section do
+      = turbo_frame_tag "flash"
+        = render "shared/flash"
+      - if @submissions.empty?
+        = polaris_card
+          = polaris_empty_state( heading: "No quiz submitted yet", image: asset_path("emptystate-files.png")) do |state|
+            / - state.with_primary_action(url: new_teachers_quiz_path, data: { turbo_frame: "modal" }) { "Add Quiz" }
+            / - state.with_secondary_action(url: "#", data: { turbo_frame: "_top" }) { "Learn more" }
+            p There's no quiz submitted yet.
+      - else
+        = polaris_card do |card|
+          - card.with_section(unstyled: true)
+            = polaris_index_table @submissions.each_with_index do |table, index|
+              / - table.with_column "ID" do |row|
+                = index.to_i + 1
+              - table.with_column "Title" do |row|
+                - link_to teachers_quiz_show_submitted_path(row.quiz, submission_id: row.id)
+                  b
+                    = row.quiz&.title
+              - table.with_column "Description", classes: "truncate" do |row|
+                = row.quiz&.description
+              - table.with_column "Status" do |row|
+                | Submitted
+              - table.with_column "Due Date" do |row|
+                = row.quiz&.due_date
+              - table.with_column "Start Time" do |row|
+                = row.quiz&.start_time.strftime("%H:%M")
+              - table.with_column "End Time" do |row|
+                = row.quiz&.end_time.strftime("%H:%M")
+              - table.with_column "Questions" do |row|
+                = row.quiz&.questions.count || 0 
+
+          / - card.with_section(unstyled: true)
+            .pagy-container
+              == pagy_info(@pagy)
+              == pagy_nav(@pagy) 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html class="<%= polaris_html_classes %>" style="<%= polaris_html_styles %>">
+  <head>
+    <title><%= content_for(:title) || "Koi Viva Voice" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <%= stylesheet_link_tag "polaris_view_components", "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body style="<%= polaris_body_styles %>">
+    <% if @current_user&.teacher? %>
+      <%= render "shared/nav" %>
+    <% elsif @current_user&.student? %>
+      <%= render "shared/student_nav" %>
+    <% else %>
+      <%= yield %>
+    <% end %>
+    <%= turbo_frame_tag "modal", target: "_top" %>
+  </body>
+</html>

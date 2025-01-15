@@ -1,0 +1,65 @@
+= polaris_page(title: @quiz.title, back_url: submitted_teachers_quizzes_path, subtitle: @quiz.description.truncate(75), full_width: true) do |page|
+  - page.with_title_metadata do
+    = polaris_badge(status: :success) { "Completed" }
+  
+  / - page.with_secondary_action(url: students_quizzes_path, icon_name: "ArrowLeftIcon") { "Back to Quizzes" }
+
+  = render "shared/flash"
+
+  = polaris_card(title: "Quiz Summary") do |card|
+    - card.with_section(border_bottom: true) do
+      p Total Questions: #{@quiz.questions.count}
+      / p "Time Taken: #{@quiz.time_taken} minutes"
+
+    - card.with_section(title: "Student Answers") do
+      = polaris_stack(wrap: false, vertical: true) do |stack|
+        - @quiz.questions.each_with_index do |question, index|
+          - stack.with_item do
+            = polaris_card(title: "Question #{index + 1}: #{question.title}", subdued: true) do |question_card|
+              - question_card.with_section(border_bottom: true) do
+                / p "Question Description:"
+                p.question-description= question.description
+              
+              - question_card.with_section(title: "Your Answer", subdued: true) do
+                / div style="display:flex"
+                  p.answer= question.answers.last&.answer || "No answer submitted."
+                  = polaris_spacer(horizontal: :loose)
+                  p.answer= question.answers.last&.answer || "No answer submitted."
+                / = polaris_horizontal_stack do
+                  = polaris_horizontal_stack(gap: "4", wrap: false, block_align: :center) do
+                    | aa
+                    | bb
+
+                / p.answer= question.answers.last&.answer || "No answer submitted."
+                / - if question.answers&.where(student_id: @submission.user_id)&.last&.answer
+                /   = question.answers&.where(student_id: @submission.user_id)&.last&.answer
+                / - else
+                /   | No answer submitted.
+                .mt-1
+                - if question.answers&.where(student_id: @submission.user_id)&.last&.video&.file&.attached?
+                  / - url = cloudinary_url(question&.answers&.where(student_id: @submission.user_id)&.last&.video&.file&.blob&.key, resource_type: 'raw', format: "mp4") if question&.answers&.last&.video&.title.eql?("live")
+                  / - url = cloudinary_url(question&.answers&.where(student_id: @submission.user_id)&.last&.video&.file&.blob&.key, resource_type: 'video', format: "mov") unless question&.answers&.last&.video&.title.eql?("live")
+                  / h1 Video Submission:
+                  = tag.video(nil, controls: true, width: "640", height: "360", preload: "metadata", src: url_for(question&.answers&.where(student_id: @submission.user_id)&.last&.video&.file))
+                  / = link_to "Submitted Video", cloudinary_url(question.answers.last.video.file.key, resource_type: 'video', format: "mp4"), target: "_blank", rel: "noopener"
+                - else
+                  | No video submission.
+
+              - if question.answers&.where(student_id: @submission.user_id)&.last&.answer
+                - question_card.with_section(title: "Mark Question", subdued: true) do
+                  / = form_with url: teachers_mark_question_path(question.answers&.last) do |f|
+                  = form_with url: teachers_mark_question_path(question.answers&.where(student_id: @submission.user_id)&.last), builder: Polaris::FormBuilder, html: { data: { turbo: false, target: "_top", controller: "polaris-modal form", action: "turbo:submit-end->form#closeModal" } } do |f|
+                    = polaris_form_layout do |form_layout|
+                      - form_layout.with_group do |group|
+                        - group.with_item
+                          = f.polaris_select(:number, label: "Rating", selected: question.answers&.where(student_id: @submission.user_id)&.last&.mark&.number, select_options: { prompt: "Select rating" }, options: (1..10).map { |num| [num, num.to_s] }, required: true)
+                        - group.with_item
+                          = f.polaris_text_field :comment, multiline: true, value: question.answers&.where(student_id: @submission.user_id)&.last&.mark&.comment, rows: 1, placeholder: "comment here if any"
+                        - group.with_item
+                          = f.submit "Save Mark", class: "Polaris-Button Polaris-Button--primary mt-5"
+                    / = f.  polaris_text_field :comment, label_hidden: true, multiline: true, rows: 2, required: true, placeholder: "comment here if any"
+
+              / - question_card.with_section(title: "Correct Answer", subdued: true) do
+                p.correct-answer= "No correct answer provided."
+  
+  - page.with_primary_action(url: submitted_teachers_quizzes_path, icon_name: "CheckCircleIcon") { "Return to Dashboard" }

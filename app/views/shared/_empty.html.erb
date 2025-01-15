@@ -1,0 +1,11 @@
+<%= polaris_card do %>
+  <%= polaris_empty_state(
+    heading: "Manage your videos",
+    image: "https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png",
+  ) do |state| %>
+    <% state.with_primary_action(url: new_video_path) { "Add Video" } %>
+    <% state.with_secondary_action(url: "#") { "Learn more" } %>
+
+    <p>Track, manage, and publish your video files.</p>
+  <% end %>
+<% end %>

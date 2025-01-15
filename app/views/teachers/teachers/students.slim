@@ -1,0 +1,47 @@
+= polaris_page(title: "Students", subtitle: "List of all students", full_width: true) do | polaris_page |
+  - polaris_page.with_custom_primary_action do 
+    = polaris_horizontal_stack(gap: '2') do |stack|
+      = polaris_button(primary: true, icon_name: "PlusIcon", url: teachers_new_student_path, data: { turbo_frame: "modal" }) { "Add Student" }
+
+  = polaris_layout do |layout| 
+    - layout.with_section do
+      = turbo_frame_tag "flash"
+        = render "shared/flash"
+      - if @students.empty?
+        = polaris_card
+          = polaris_empty_state( heading: "No student found", image: asset_path("emptystate-files.png")) do |state|
+            - state.with_primary_action(url: teachers_new_student_path, data: { turbo_frame: "modal" }) { "Add Student" }
+            - state.with_secondary_action(url: "#", data: { turbo_frame: "_top" }) { "Learn more" }
+            p Your currentlly have no student.
+      - else
+        = polaris_card do |card|
+          - card.with_section(unstyled: true)
+            = polaris_index_table @students.each_with_index do |table, index|
+              / - table.with_column "ID" do |row|
+                = index.to_i + 1
+              - table.with_column "First Name" do |row|
+                - link_to teachers_show_student_path(row)
+                  b
+                    = row.first_name
+              - table.with_column "Last Name", classes: "truncate" do |row|
+                - link_to teachers_show_student_path(row)
+                  b
+                    = row.last_name
+              - table.with_column "Email" do |row|
+                = row.email
+              - table.with_column "Status" do |row|
+                = row.status.capitalize
+
+              - table.with_column "Action" do |row|
+                = polaris_horizontal_stack(gap: '1')  
+                  = button_to teachers_show_student_path(row), method: :get do
+                    = polaris_icon name: "ViewIcon"
+                  = button_to teachers_edit_student_path(row), method: :get, data: { turbo_frame: "modal" } do
+                    = polaris_icon name: "EditIcon"
+                  = button_to teachers_destroy_student_path(row), method: :delete, data: { turbo: false }, onclick: "return confirm('Are you sure you want to delete this student?')" do
+                    = polaris_icon name: "DeleteIcon"
+          / - card.with_section(unstyled: true)
+            .pagy-container
+              == pagy_info(@pagy)
+              == pagy_nav(@pagy) 
+

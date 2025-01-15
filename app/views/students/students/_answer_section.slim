@@ -1,0 +1,41 @@
+- if question.present?
+  = form_with(model: Video.new, builder: Polaris::FormBuilder, html: { data: { turbo: false, controller: "form" } }) do |f|
+    = polaris_form_layout(classes: 'mb-3') do |form_layout|
+      - form_layout.with_group do |group|
+        - group.with_item
+          = f.hidden_field :question_id, value: question.id
+          = f.hidden_field :duration, value: question.duration, id: "duration"
+          / = f.hidden_field :live, as: :video, id: "live-input"
+        - group.with_item
+          = f.polaris_dropzone :live, as: :video, label: "Upload video", multiple: false, accept: 'video/*', hidden: true, id: "live-input"
+          - answer = question&.answers&.where(student_id: @current_user.id, is_published: true)&.last
+          - if answer&.present?
+            = f.hidden_field :answer, value: answer&.id, id: "answer-input"
+
+      - card.with_section(title: "Question #{question&.number}: #{question&.title || "Question"}", subdued: true) do
+        = polaris_text_container do
+          = question&.description || "Question description"
+      - card.with_section
+        center
+          #prefix
+      #answer
+        - card.with_section(title: "Answer:", id: "answer") do
+          div class="grid grid-cols-2 gap-4"
+            div
+              = tag.video(nil, id: "live", class: "border border-gray-300 rounded-md", width: "300", height: "200", autoplay: true, muted: true)
+
+              #video-recording-seconds
+              #auto-recording
+                = polaris_button(text: "Start Video", id: "auto-start", classes: "mt-2", hidden: true) { "Start Video" }
+              = polaris_button(text: "Start Video", id: "start", classes: "mt-2") { "Re Record Video" }
+              = polaris_button(text: "Stop Video", id: "stop", classes: "mt-2", destructive: true) { "Stop and Preview" }
+              / div id="submit"
+                = f.submit "Save Answer", class: "Polaris-Button mr-2 Polaris-Button--primary mt-2"
+            div
+              #recorded
+              / | Preview
+            / - card.with_section(title: "Preview:", id: "preview") do
+    = f.submit "Save Answer", class: "Polaris-Button mr-2 Polaris-Button--primary", id: "submit"
+- else
+  = polaris_empty_state(heading: "No question is available yet", image: asset_path("emptystate-files.png")) do |state|
+    p There's no question generated yet. Try connecting to your teacher.

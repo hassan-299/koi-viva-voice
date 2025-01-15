@@ -1,0 +1,17 @@
+ruby:
+  secondary_actions = []
+  secondary_actions << {content: "Delete", url: teachers_quiz_path(quiz), icon_name: "DeleteIcon", destructive: true, method: :delete, data: { method: :delete, turbo: false, confirm: "Are you sure you want to delete this quiz?" }}
+
+= polaris_page(title: quiz.title, subtitle: quiz.description.truncate(75), back_url: teachers_quizzes_path) do |page|
+  - page.with_title_metadata do
+    = polaris_badge(status: :success) { quiz.status }
+  - page.with_primary_action(url: edit_teachers_quiz_path(quiz), icon_name: "EditIcon", data: { turbo_frame: "modal" }) { "Edit" }
+  = polaris_card(title: quiz.title) do
+    p.overflow-auto
+      | #{quiz.description}
+    p
+      | #{quiz.due_date&.strftime("%B %d, %Y")}
+    p
+      | #{quiz.questions.count} questions
+    / p
+      = link_to "Back to quizzes", teachers_quizzes_path
