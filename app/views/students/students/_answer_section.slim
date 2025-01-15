@@ -18,6 +18,8 @@
       - card.with_section
         center
           #prefix
+          div id="preview" style="display:none; margin-top: 1rem;"
+            = tag.video(nil, controls: true, width: "640", height: "360", preload: "metadata", src: url_for(question&.answers&.where(student_id: @current_user.id)&.last&.video&.file))
       #answer
         - card.with_section(title: "Answer:", id: "answer") do
           div class="grid grid-cols-2 gap-4"

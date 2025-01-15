@@ -11,6 +11,7 @@ const initRecordVideo = () => {
   const recorded = document.getElementById("recorded");
   const submitButton = document.getElementById("submit");
   const prefix = document.getElementById("prefix");
+  const preview = document.getElementById("preview");
   const answer = document.getElementById("answer");
   const durationElement = document.getElementById("duration");
   const duration = durationElement?.value;
@@ -19,11 +20,13 @@ const initRecordVideo = () => {
   answer.style.display = 'none';
   submitButton.style.display = 'none';
   startButton.style.display = 'none';
+  preview.style.display = 'none';
 
   // If answer already exists, exit
   if (answerInput?.value.length > 0) {
     prefix.innerHTML = '<strong>Answer already submitted</strong>';
     prefix.style.display = 'block';
+    preview.style.display = 'block';
     return;
   }
   if (!form || !stopButton || !liveVideo || !secondsDisplay || (answerInput && !answerInput?.value === undefined)) return;
