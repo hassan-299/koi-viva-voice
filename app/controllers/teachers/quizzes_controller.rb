@@ -13,6 +13,7 @@ class Teachers::QuizzesController < ApplicationController
     quiz.created_by_id = @current_user.id
 
     if quiz.save
+      QuizMailer.quiz_created_email(@current_user, quiz).deliver_now
       respond_to do |format|
         flash[:success] = "Quiz is created successfully."
         format.html { redirect_to teachers_quizzes_path }
@@ -57,6 +58,20 @@ class Teachers::QuizzesController < ApplicationController
   def mark_question
     mark = Mark.find_or_initialize_by(answer_id: params[:id], teacher_id: @current_user.id)
     if mark.update(number: params[:number], comment: params[:comment])
+      answer = Answer.find_by(id: params[:id])
+      if answer.present?
+        student = User.find_by(id: answer.student_id)
+        quiz = answer.question.quiz
+        test = false
+        quiz.questions.each do |q|
+          unless Mark.find_by(answer_id: q.answers.where(student_id: student.id, is_published: true).last&.id, teacher_id: @current_user.id)
+            test = false
+          else
+            test = true
+          end
+        end
+        QuizMailer.quiz_marked(student, quiz, "A+").deliver_now if test
+      end
       flash[:success] = "Answer marked successfully."
     else
       flash[:error] = "Failed to save the mark. Please try again."

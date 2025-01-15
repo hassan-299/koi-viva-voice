@@ -63,4 +63,8 @@ Rails.application.routes.draw do
     post "mark_question/:id", to: "quizzes#mark_question", as: :mark_question
     resources :reports
   end
+
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 end

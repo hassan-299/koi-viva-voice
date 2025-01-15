@@ -23,6 +23,7 @@ class Students::StudentsController < ApplicationController
 
     if @quiz.update(quiz_params)
       flash[:success] = "Quiz submitted successfully."
+      QuizMailer.quiz_submitted(@quiz.created_by, @current_user, @quiz).deliver_now
       redirect_to students_quizzes_path
     end
   end

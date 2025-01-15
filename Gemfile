@@ -81,3 +81,8 @@ group :test do
 end
 
 gem "polaris_view_components", "~> 2.2"
+
+group :development do
+  gem "letter_opener"
+  gem "letter_opener_web"
+end

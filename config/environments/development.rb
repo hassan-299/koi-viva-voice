@@ -34,8 +34,22 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
-  # Make template changes take effect immediately.
-  config.action_mailer.perform_caching = false
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
+  # # # Make template changes take effect immediately.
+  # # config.action_mailer.perform_caching = false
+
+  # # Set outgoing SMTP server
+  # config.action_mailer.delivery_method = :smtp
+  # # user_name: "12301688@students.koi.edu.au",
+  # config.action_mailer.smtp_settings = {
+  #   user_name: "zunair@happytenant.ae",
+  #   password: "YvzSfvnPYitp",
+  #   address: smtp.gmail.com,
+  #   port: 587,
+  #   authentication: :login,
+  #   enable_starttls_auto: true
+  # }
 
   # Set localhost to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }

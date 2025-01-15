@@ -12,6 +12,10 @@ class User < ApplicationRecord
     [first_name, last_name].compact.join(" ")
   end
 
+  def name
+    [first_name, last_name].compact.join(" ")
+  end
+
   private
 
   def domain_validation
