@@ -14,7 +14,9 @@
 
       - card.with_section(title: "Question #{question&.number}: #{question&.title || "Question"}", subdued: true) do
         = polaris_text_container do
-          = question&.description || "Question description"
+          | description: #{question&.description || "Question description"}
+          br
+          | duration: #{question&.duration || 0} minutes
       - card.with_section
         center
           #prefix
