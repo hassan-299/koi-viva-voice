@@ -16,7 +16,7 @@ If you haven't cloned the repository yet, you can do so by running:
 
 ```
 
-git clone https://github.com/zunair-dev/koi-viva-voice.git
+git clone https://github.com/hassan-299/koi-viva-voice.git
 cd koi-viva-voice
 ```
 
@@ -122,7 +122,7 @@ Koi Viva Voice is a private product licensed under the koi-viva-voice License.
 
 ## Contact
 
-For questions or support, please contact [zunair-dev](https://github.com/zunair-dev) or open an issue on the repository.
+For questions or support, please contact [Amir Javed](https://github.com/hassan-299/koi-viva-voice.git) or open an issue on the repository.
 
 ---
 
