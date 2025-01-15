@@ -16,7 +16,7 @@ div style="backgroud-repeat:no-repeat;background-size:cover;background-image:url
           - card.with_section() do
             = polaris_stack(vertical: :true, wrap: false) do |stack|
               / - stack.with_item do
-                image src="#{asset_path("bg.jpg")}" width="150px" style="margin-top:20px;margin-bottom:20px;"
+                image src="#{asset_path("bg.jpg")}" width="150px" style="margin-top:20px;margin-bottom:10px;"
               - stack.with_item do
                 = polaris_display_text(size: :medium, style: "font-weight:bold") { "Try Koi Viva Voice now 🚀" }
               - stack.with_item(style:"margin-top:10px;") do
@@ -26,10 +26,17 @@ div style="backgroud-repeat:no-repeat;background-size:cover;background-image:url
               = render "shared/flash"
               = polaris_spacer(vertical: :loose)
               = f.errors_summary
-              = f.polaris_text_field :first_name, required: true, style:"margin-bottom:20px;"
-              = f.polaris_text_field :last_name, required: true, style:"margin-bottom:20px;"
-              / = f.polaris_text_field :username, label: "Username", style:"margin-bottom:20px;"
-              = f.polaris_text_field :email, label: "Email", required: true, style:"margin-bottom:20px;", type: :email
+              = f.polaris_text_field :email, label: "Email", required: true, style:"margin-bottom:10px;", type: :email
+              = polaris_form_layout do |form_layout|
+                - form_layout.with_group do |group|
+                  - group.with_item
+                    = f.polaris_text_field :first_name, required: true, style:"margin-bottom:10px;"
+                  - group.with_item
+                    = f.polaris_text_field :last_name, required: true, style:"margin-bottom:10px;"
+              / = f.polaris_text_field :first_name, required: true, style:"margin-bottom:10px;"
+              / = f.polaris_text_field :last_name, required: true, style:"margin-bottom:10px;"
+              / = f.polaris_text_field :username, label: "Username", style:"margin-bottom:10px;"
+              = f.polaris_select(:organization_id, label: "Department", options: Organization.all.map { |o| [o.name, o.id] }, style:"margin-bottom:10px;", required: true)
               = f.polaris_text_field :password, label: "Password", type: :password, required: true, help_text: "Create a strong password with at least 6 characters"
               div style="margin-top:20px;" 
                 = polaris_button(submit: true, primary: true, full_width: true, style:"min-height:2.4rem; font-size:1.6rem !important; font-weight:bold", class:"Polaris-Button__Content") { "Register" }

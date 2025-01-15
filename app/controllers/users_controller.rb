@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   def create
     user = User.new(user_params)
     user.username = user.email if user.username.nil?
-    user.organization_id = Organization.find_by(name: "KOI VIVA VOICE").id # TODO:: Replace with the actual organization ID
+    # user.organization_id = Organization.find_by(name: "KOI VIVA VOICE").id # TODO:: Replace with the actual organization ID
 
     if user.save
       flash[:success] = "Account created successfully"
@@ -45,6 +45,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :username, :password, :email, :role, :status, :failed_attempts)
+    params.require(:user).permit(:first_name, :last_name, :username, :password, :email, :role, :status, :failed_attempts, :organization_id)
   end
 end
