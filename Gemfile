@@ -28,7 +28,7 @@ gem "decent_exposure"
 gem "slim-rails"
 gem "cocoon"
 
-gem "cloudinary", "~> 1.16.0"
+gem "cloudinary", "~> 2.2.0"
 gem "aws-sdk-s3", "~> 1.136"
 
 # for graphs
