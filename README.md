@@ -78,6 +78,11 @@ bin/dev
 
 Visit [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
+## Teacher Credentials
+
+To gain access as a teacher, please contact [Hassan](https://github.com/hassan-299) to receive your login credentials and additional setup instructions.
+
+
 ## Technologies Used
 
 - **Ruby on Rails**: Backend framework for building the application.
@@ -122,7 +127,7 @@ Koi Viva Voice is a private product licensed under the koi-viva-voice License.
 
 ## Contact
 
-For questions or support, please contact [Amir Javed](https://github.com/hassan-299/koi-viva-voice.git) or open an issue on the repository.
+For questions or support, please contact [Hassan](https://github.com/hassan-299) or open an issue on the repository.
 
 ---
 
