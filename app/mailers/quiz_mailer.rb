@@ -1,10 +1,10 @@
 class QuizMailer < ApplicationMailer
-  def quiz_created_email(student, quiz)
+  def quiz_created_email(teacher, quiz)
     @quiz = quiz
     @questions = quiz.questions
-    @student = student
+    @teacher = teacher
     mail(
-      to: student,
+      to: @teacher.organization.users.student.pluck(:email),
       subject: "New Quiz Created: #{@quiz.title}"
     )
   end

@@ -28,7 +28,7 @@
 <body>
   <div class="container">
     <div class="header">
-      Hello <%= @student.name %>,
+      Hello Students,
     </div>
     <h1>New Quiz Created: <%= @quiz.title %></h1>
     <p><strong>Description:</strong> <%= @quiz.description %></p>
@@ -36,16 +36,8 @@
     <p><strong>End Time:</strong> <%= @quiz.end_time.strftime('%I:%M %p') %></p>
     <p><strong>Due Date:</strong> <%= @quiz.due_date.strftime('%d-%m-%Y') %></p>
 
-    <h2>Questions:</h2>
-    <ul>
-      <% @questions.each do |question| %>
-        <li>
-          <strong><%= question.title %>:</strong>
-          <p><%= question.description %></p>
-          <p><strong>Duration:</strong> <%= question.duration || 0 %> minutes</p>
-        </li>
-      <% end %>
-    </ul>
+    <p><strong>Questions:</strong> <%= @quiz.questions.count %></p>
+    
     <p>Best regards,</p>
     <p>The Koi Viva Voice Team</p>
     <div class="footer">
