@@ -1,6 +1,9 @@
 = polaris_page(title: @quiz.title, back_url: submitted_teachers_quizzes_path, subtitle: @quiz.description.truncate(75), full_width: true) do |page|
   - page.with_title_metadata do
     = polaris_badge(status: :success) { "Completed" }
+    - flag = @quiz.questions.any? { |question| question.answers&.last&.mark.present? }
+    - if flag
+      = polaris_badge(status: :info, style: "margin-left: 10px") { "Marked" }
   
   / - page.with_secondary_action(url: students_quizzes_path, icon_name: "ArrowLeftIcon") { "Back to Quizzes" }
 

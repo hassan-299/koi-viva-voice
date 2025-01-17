@@ -37,6 +37,7 @@ class VideosController < ApplicationController
       answer = Answer.find_or_create_by(student_id:, question_id: @question.id)
       answer.answer = params[:video][:live]
       answer.video_id = @video.id
+      answer.is_published = true
       answer.save
     else
       @video = Video.find_by(student_id:, question_id: @question.id)

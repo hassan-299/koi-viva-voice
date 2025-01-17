@@ -22,8 +22,12 @@
                 = index.to_i + 1
               - table.with_column "Title" do |row|
                 - link_to teachers_quiz_show_submitted_path(row.quiz, submission_id: row.id)
-                  b
-                    = row.quiz&.title
+                  b = row.quiz&.title
+
+                  - flag = row.quiz.questions.any? { |question| question.answers&.last&.mark.present? }
+                  - if flag
+                    = polaris_badge(status: :info, style: "margin-left: 10px") { "Marked" }
+
               - table.with_column "Description", classes: "truncate" do |row|
                 = row.quiz&.description
               - table.with_column "Status" do |row|
