@@ -5,7 +5,7 @@ ruby:
 = polaris_page(title: quiz.title, back_url: students_quizzes_path, subtitle: quiz.description.truncate(75), full_width: true) do |page|
   - page.with_title_metadata do
     = polaris_badge(status: :success) { "In Progress" }
-  - page.with_primary_action(url: students_submitted_path(id: quiz.id), icon_name: "CheckIcon", data: { turbo: false }) { "Submit" }
+  / - page.with_primary_action(url: students_submitted_path(id: quiz.id), icon_name: "CheckIcon", data: { turbo: false }) { "Submit" }
 
   / - title = quiz.questions.any? ? "Status: 1/#{quiz.questions.count}" : "Status: 0/0"
   - title = ""
