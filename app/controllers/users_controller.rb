@@ -9,9 +9,10 @@ class UsersController < ApplicationController
 
     if user.save
       flash[:success] = "Account created successfully"
-      session[:user] = { id: user.id } # Store only the ID
+      # session[:user] = { id: user.id } # Store only the ID
 
-      redirect_to user.student? ? students_portal_path : teachers_portal_path
+      # redirect_to user.student? ? students_portal_path : teachers_portal_path
+      redirect_to root_path
     elsif user.errors.any?
       flash[:error] = user.errors.full_messages.join(", ")
       render :sign_up
