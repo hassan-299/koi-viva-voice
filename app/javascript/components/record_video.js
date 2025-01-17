@@ -92,7 +92,7 @@ const initRecordVideo = () => {
       url: form.action,
       type: "POST",
       data: formData
-    });
+    });    
   };
 
   startButton.addEventListener("click", () => {
@@ -219,7 +219,7 @@ const initRecordVideo = () => {
       prefix.style.display = 'none';
       answer.style.display = 'block';
       // preview.style.display = 'block';
-      submitButton.style.display = 'block';
+      // submitButton.style.display = 'block';
     }
   }, 1000);
 
