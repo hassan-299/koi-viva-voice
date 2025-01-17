@@ -39,7 +39,7 @@
               #recorded
               / | Preview
             / - card.with_section(title: "Preview:", id: "preview") do
-    / = f.submit "Save Answer", class: "Polaris-Button mr-2 Polaris-Button--primary", id: "submit"
+    = f.submit "Save Answer", class: "Polaris-Button mr-2 Polaris-Button--primary", id: "submit"
 - else
   = polaris_empty_state(heading: "No question is available yet", image: asset_path("emptystate-files.png")) do |state|
     p There's no question generated yet. Try connecting to your teacher.
