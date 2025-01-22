@@ -5,9 +5,9 @@
   = polaris_layout do |layout|
     - layout.with_section do
       = polaris_callout_card( illustration: asset_path("dashboar-element.svg")) do |callout|
-        = polaris_display_text(size: :medium, style:"font-weight:bold") { "Welcome to Koi Viva Voice's student dashboard" }
+        = polaris_display_text(size: :medium, style:"font-weight:bold") { "Welcome to Koi Viva Voce's student dashboard" }
         = polaris_spacer(vertical: :extra_tight) 
-        = polaris_text_style(variation: :subdued) { "Maximize your educational experience with our step-by-step guidance for a seamless setup Get up and running in no time. Discover the power of Koi Viva Voice today!" }
+        = polaris_text_style(variation: :subdued) { "Maximize your educational experience with our step-by-step guidance for a seamless setup Get up and running in no time. Discover the power of Koi Viva Voce today!" }
 
       = polaris_card() do |card|
         - card.with_section(sectioned: true) do
@@ -28,6 +28,6 @@
             = polaris_spacer(vertical: :loose) 
             hr
             = polaris_spacer(vertical: :loose) 
-            = polaris_callout_card(title: "Streamline your Koi Viva Voice journey with a personalized onboarding session Get started efficiently and make the most of your experience", variation: :subdued,  illustration: asset_path("logo.jpg"), style:"box-shadow:none !important;padding-bottom:0px;") do |callout|
+            = polaris_callout_card(title: "Streamline your Koi Viva Voce journey with a personalized onboarding session Get started efficiently and make the most of your experience", variation: :subdued,  illustration: asset_path("logo.jpg"), style:"box-shadow:none !important;padding-bottom:0px;") do |callout|
               - callout.with_primary_action(url: students_quizzes_path, primary: true) { "View all quizzes" }
               - callout.with_secondary_action(url: students_submitted_quizzes_path, secondary: true) { "Goto submitted quizzes" }

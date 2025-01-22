@@ -5,7 +5,7 @@
     - layout.with_section(secondary: true) do
       div.text-center.mt-32
         h1.text-3xl.font-bold.text-gray-900 
-          | Welcome to Koi Viva Voice
+          | Welcome to Koi Viva Voce
 
 
 div style="backgroud-repeat:no-repeat;background-size:cover;background-image:url(#{asset_path("bg2.png")});height:100vh;"
@@ -18,7 +18,7 @@ div style="backgroud-repeat:no-repeat;background-size:cover;background-image:url
               / - stack.with_item do
                 image src="#{asset_path("bg.jpg")}" width="150px" style="margin-top:20px;margin-bottom:20px;"
               - stack.with_item do
-                = polaris_display_text(size: :medium, style: "font-weight:bold") { "Welcome to Koi Viva Voice! 👋" }
+                = polaris_display_text(size: :medium, style: "font-weight:bold") { "Welcome to Koi Viva Voce! 👋" }
               - stack.with_item(style:"margin-top:10px;") do
                 = polaris_text_style(variation: :subdued) { "Please sign-in to your account and start the adventure" }
           - card.with_section(sectioned: false) do

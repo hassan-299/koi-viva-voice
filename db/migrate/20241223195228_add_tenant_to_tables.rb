@@ -13,7 +13,7 @@ class AddTenantToTables < ActiveRecord::Migration[8.0]
     add_index :quizzes, [ :organization_id, :title ]
 
     # add defalut org and set it to the first org
-    default_org = Organization.create!(name: 'KOI VIVA VOICE', subdomain: 'students.koi.edu.au')
+    default_org = Organization.create!(name: 'KOI VIVA Voce', subdomain: 'students.koi.edu.au')
     User.update_all(organization_id: default_org.id)
     Quiz.update_all(organization_id: default_org.id)
     Question.update_all(organization_id: default_org.id)

@@ -1,6 +1,6 @@
-# Koi Viva Voice
+# Koi Viva Voce
 
-Koi Viva Voice is a powerful quiz management tool designed to streamline learning and assessment in educational institutions. Whether you're an educator or student, Koi Viva Voice offers an intuitive platform to create, manage, and evaluate quizzes that foster interactive learning experiences.
+Koi Viva Voce is a powerful quiz management tool designed to streamline learning and assessment in educational institutions. Whether you're an educator or student, Koi Viva Voce offers an intuitive platform to create, manage, and evaluate quizzes that foster interactive learning experiences.
 
 ## Prerequisites
 
@@ -82,7 +82,6 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser to see the 
 
 To gain access as a teacher, please contact [Hassan](https://github.com/hassan-299) to receive your login credentials and additional setup instructions.
 
-
 ## Technologies Used
 
 - **Ruby on Rails**: Backend framework for building the application.
@@ -114,7 +113,7 @@ Here are some of the key gems used in the project and their purpose:
 
 ## Contributing
 
-We welcome contributions to Koi Viva Voice! To contribute:
+We welcome contributions to Koi Viva Voce! To contribute:
 
 1. Fork the repository.
 2. Create a new branch for your feature or bugfix.
@@ -123,7 +122,7 @@ We welcome contributions to Koi Viva Voice! To contribute:
 
 ## License
 
-Koi Viva Voice is a private product licensed under the koi-viva-voice License.
+Koi Viva Voce is a private product licensed under the koi-viva-voice License.
 
 ## Contact
 
