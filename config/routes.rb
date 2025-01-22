@@ -15,7 +15,8 @@ Rails.application.routes.draw do
 
   get :sign_up, to: "users#sign_up"
   post :create, to: "users#create"
-  post :sign_in, to: "users#sign_in"
+  get :sign_in, to: "users#sign_in"
+  post :log_in, to: "users#log_in"
   get :sign_out, to: "users#sign_out"
 
   namespace :students do

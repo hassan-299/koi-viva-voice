@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, except: %i[create sign_in sign_up sign_out]
+  before_action :authenticate_user!, except: %i[create log_in sign_in sign_up sign_out]
+  before_action :is_signed_in, only: %i[sign_in sign_up]
   expose :user
 
   def create
@@ -22,7 +23,7 @@ class UsersController < ApplicationController
     end
   end
 
-  def sign_in
+  def log_in
     user = User.find_by(username: user_params[:username], password: user_params[:password])# || User.find_by(email: user_params[:email], password: user_params[:password])
 
     if user.present?
@@ -47,5 +48,14 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :username, :password, :email, :role, :status, :failed_attempts, :organization_id)
+  end
+
+  def is_signed_in
+    if session[:user]
+      flash[:info] = "You are already signed in"
+      current_user = User.find_by(id: session.dig("user", "id"))
+
+      redirect_to current_user.student? ? students_portal_path : teachers_portal_path
+    end
   end
 end
