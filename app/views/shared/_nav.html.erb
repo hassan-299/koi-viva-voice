@@ -16,7 +16,7 @@
     <% top_bar.with_user_menu(name: @current_user.full_name, detail: @current_user.role.titleize) do |user_menu| %>
       <% user_menu.with_avatar(initials: @current_user.first_name[0]) %>
       <%= polaris_action_list do |action_list| %>
-        <% action_list.with_item(icon: "PersonIcon", url: "#") { "Profile" } %>
+        <%# action_list.with_item(icon: "PersonIcon", url: "#") { "Profile" } %>
         <% action_list.with_item(icon: "ExitIcon", url: sign_out_path) { "Log out" } %>
       <% end %>
     <% end %>
@@ -33,11 +33,11 @@
       <%# section.with_item(url: videos_path, label: "Videos", icon: "PlayCircleIcon", selected: is_active_link?(videos_path, "videos")) %>
       <% section.with_item(url: submitted_teachers_quizzes_path, label: "Submissions", icon: "ChartVerticalFilledIcon", selected: is_active_link?(submitted_teachers_quizzes_path, nil)) %>
     <% end %>
-    <% navigation.with_section(separator: true, style:"margin-top:auto; border-top: 1px solid rgba(0,0,0,0.1);") do |section| %>
-      <% section.with_item(url: "#", label: "Notifications", icon: "NotificationIcon", badge: "0" ) %>
-      <% section.with_item(url: "#", label: "Settings", icon: "SettingsIcon") %>
+    <%# navigation.with_section(separator: true, style:"margin-top:auto; border-top: 1px solid rgba(0,0,0,0.1);") do |section| %>
+      <%# section.with_item(url: "#", label: "Notifications", icon: "NotificationIcon", badge: "0" ) %>
+      <%# section.with_item(url: "#", label: "Settings", icon: "SettingsIcon") %>
       <%# section.with_item(url: sign_out_path, label: "Log out", icon: "ExitIcon") %>
-    <% end %>
+    <%# end %>
   <% end %>
 
   <%# render "shared/flash" %>
