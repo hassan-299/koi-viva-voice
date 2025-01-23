@@ -13,7 +13,8 @@ class UsersController < ApplicationController
       # session[:user] = { id: user.id } # Store only the ID
 
       # redirect_to user.student? ? students_portal_path : teachers_portal_path
-      redirect_to root_path
+      # redirect_to root_path
+      redirect_to sign_in_path
     elsif user.errors.any?
       flash[:error] = user.errors.full_messages.join(", ")
       render :sign_up
@@ -33,7 +34,7 @@ class UsersController < ApplicationController
       redirect_to user.student? ? students_portal_path : teachers_portal_path
     else
       flash[:error] = "Invalid username or password"
-      redirect_to root_path
+      redirect_to sign_in_path
     end
   end
 
@@ -41,7 +42,7 @@ class UsersController < ApplicationController
     session.delete(:user)
     flash[:success] = "Signed out successfully"
 
-    redirect_to root_path
+    redirect_to sign_in_path
   end
 
   private
