@@ -63,7 +63,7 @@ class Students::StudentsController < ApplicationController
   def submitted
     if params[:id].present?
       @quiz = Quiz.find(params[:id])
-      @quiz.pending!
+      # @quiz.pending!
       @quiz.submissions.create(user_id: @current_user.id, status: "completed") unless @quiz.is_submitted?(@current_user.id)
       flash[:success] = "Quiz submitted successfully."
     else

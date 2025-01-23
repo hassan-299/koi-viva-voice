@@ -27,7 +27,7 @@
               - table.with_column "Description", classes: "truncate" do |row|
                 = row.description
               - table.with_column "Status" do |row|
-                = row.get_status
+                = row.submissions_status(@current_user.id)
               - table.with_column "Due Date" do |row|
                 = row.due_date
               - table.with_column "Start Time" do |row|

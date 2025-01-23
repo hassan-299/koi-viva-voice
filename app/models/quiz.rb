@@ -19,13 +19,21 @@ class Quiz < ApplicationRecord
     submissions.where(status: 2, user_id: user_id).any?
   end
 
-  def get_status
-    if pending?
-      "Done"
+  def submissions_status(user_id)
+    if is_submitted?(user_id)
+      "Submitted"
     else
       "Active"
     end
   end
+
+  # def get_status
+  #   if pending?
+  #     "Done"
+  #   else
+  #     "Active"
+  #   end
+  # end
 
   def score(user_id)
     questions = self.questions
