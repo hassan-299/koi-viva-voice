@@ -53,6 +53,7 @@ class Teachers::QuizzesController < ApplicationController
 
   def submitted
     @submissions = Submission.joins(:quiz).where(quizzes: { created_by_id: @current_user.id }).where(status: "completed")
+    # @submissions = Quiz.where(id: VideoRequest.pluck(:quiz_id))
     # @quizzes = Quiz.where(created_by_id: @current_user.id).joins(:submissions).where(submissions: { status: "completed" })
   end
 

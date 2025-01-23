@@ -32,7 +32,9 @@ class Students::StudentsController < ApplicationController
 
   def submitted_quizzes
     # @quizzes = Quiz.where(status: "completed")
-    @quizzes = Quiz.joins(:submissions).where(submissions: { status: "completed", user_id: @current_user.id })
+    # @quizzes = Quiz.joins(:submissions).where(submissions: { status: "completed", user_id: @current_user.id })
+    @quizzes = Quiz.where(id: VideoRequest.where(student_id: @current_user.id).pluck(:quiz_id))
+    # @quizzes = Quiz.where(id: VideoRequest.where(student_id: @current_user.id).where.not(quiz_id
     # @quizzes = Quiz.where(status: "submitted", user_id: @current_user.id)
   end
 
