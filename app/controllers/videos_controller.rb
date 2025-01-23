@@ -29,6 +29,7 @@ class VideosController < ApplicationController
     @quiz = @question.quiz
     # @quiz.in_progress!
 
+    @video_request = VideoRequest.find_or_create_by(student_id:, question_id: @question.id)
     if params[:video][:live].present?
       @video = Video.find_or_create_by(student_id:, question_id: @question.id)
       @video.file.purge if @video&.file&.attached?

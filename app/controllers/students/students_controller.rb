@@ -17,6 +17,7 @@ class Students::StudentsController < ApplicationController
   def attempt_quiz
     @quiz = Quiz.find(params[:id])
     @quiz.update_column(:started, true)
+    @video_request = VideoRequest.find_or_create_by(student_id: @current_user.id, quiz_id: @quiz.id)
   end
 
   def submit_quiz
@@ -96,6 +97,9 @@ class Students::StudentsController < ApplicationController
     if params[:id].present? && Quiz.find(params[:id]).is_submitted?(@current_user.id)
       flash[:error] = "You have already submitted this quiz"
       redirect_to students_submitted_quizzes_path
+    elsif VideoRequest.find_by(student_id: @current_user.id, quiz_id: params[:id]).present?
+      flash[:error] = "You have already tried to submit this quiz"
+      redirect_to students_quizzes_path
     end
   end
 end

@@ -1,0 +1,2 @@
+class VideoRequest < ApplicationRecord
+end
