@@ -5,7 +5,7 @@ class User < ApplicationRecord
   validate :domain_validation
   encrypts :password, deterministic: true
 
-  enum :role, { student: 0, teacher: 1 }
+  enum :role, { student: 0, teacher: 1, admin: 2 }
   enum :status, { active: 0, disabled: 1 }
 
   def full_name
