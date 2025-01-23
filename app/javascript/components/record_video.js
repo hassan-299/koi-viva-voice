@@ -59,6 +59,18 @@ const initRecordVideo = () => {
       secondsDisplay.textContent = `Recording: ${secondsElapsed} seconds`;
     }, 1000);
 
+    // Check duration and auto-submit if valid
+    if (duration && !isNaN(duration) && parseInt(duration) > 0) {
+      const totalSeconds = parseInt(duration) * 60; // Convert minutes to seconds
+      console.log("Auto-submit will happen in", totalSeconds, "seconds.");
+  
+      setTimeout(() => {
+        // Stop recording and auto-submit
+        stopButton.click();
+        // submitButton.click();  // Automatically trigger form submission after recording is stopped
+      }, totalSeconds * 1000);
+    }
+
     const stopped = new Promise((resolve, reject) => {
       recorder.onstop = () => {
         clearInterval(timerInterval); // Stop the timer
@@ -223,17 +235,17 @@ const initRecordVideo = () => {
     }
   }, 1000);
 
-  // Check duration and auto-submit if valid
-  if (duration && !isNaN(duration) && parseInt(duration) > 0) {
-    const totalSeconds = parseInt(duration) * 60; // Convert minutes to seconds
-    console.log("Auto-submit will happen in", totalSeconds, "seconds.");
+  // // Check duration and auto-submit if valid
+  // if (duration && !isNaN(duration) && parseInt(duration) > 0) {
+  //   const totalSeconds = parseInt(duration) * 60; // Convert minutes to seconds
+  //   console.log("Auto-submit will happen in", totalSeconds, "seconds.");
 
-    setTimeout(() => {
-      // Stop recording and auto-submit
-      stopButton.click();
-      // submitButton.click();  // Automatically trigger form submission after recording is stopped
-    }, totalSeconds * 1000);
-  }
+  //   setTimeout(() => {
+  //     // Stop recording and auto-submit
+  //     stopButton.click();
+  //     // submitButton.click();  // Automatically trigger form submission after recording is stopped
+  //   }, totalSeconds * 1000);
+  // }
 };
 
 export { initRecordVideo };
