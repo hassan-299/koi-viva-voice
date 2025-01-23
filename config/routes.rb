@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   mount Avo::Engine, at: Avo.configuration.root_path
+  get :admin_sign_in, to: "admins#sign_in"
+  post :admin_log_in, to: "admins#log_in"
+
   resources :videos
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

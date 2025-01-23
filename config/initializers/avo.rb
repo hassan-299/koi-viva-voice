@@ -23,8 +23,12 @@ Avo.configure do |config|
 
   ## == Authentication ==
   # config.current_user_method = :current_user
-  # config.authenticate_with do
-  # end
+  config.authenticate_with do
+    unless Admin.find_by(id: session.dig("admin", "id")).present?
+      flash[:error] = "You must be logged in to access Admin Portal"
+      redirect_to Rails.application.routes.url_helpers.admin_sign_in_path
+    end
+  end
 
   ## == Authorization ==
   # config.is_admin_method = :is_admin

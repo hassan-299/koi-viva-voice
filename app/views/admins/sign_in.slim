@@ -1,0 +1,21 @@
+= polaris_page(narrow_width: true, style:"height: 100vh; justify-content: center; align-items: center; width: 100vw;") do
+  = polaris_layout(classes: "layout-responsive") do |layout|
+    - layout.with_section(style:"box-shadow: 6px 12px 60px rgba(0,0,0,0.4); margin-top: 32%") do
+      = polaris_card(sectioned: false, title: "Admin Sign In") do |card|
+        - card.with_section() do
+          = polaris_stack(vertical: :true, wrap: false) do |stack|
+            / - stack.with_item do
+              image src="#{asset_path("bg.jpg")}" width="150px" style="margin-top:20px;margin-bottom:20px;"
+            - stack.with_item do
+              = polaris_display_text(size: :medium, style: "font-weight:bold") { "Welcome to Koi Viva Voce! 👋" }
+            - stack.with_item(style:"margin-top:10px;") do
+              = polaris_text_style(variation: :subdued) { "Please sign-in to your account and start the adventure" }
+        - card.with_section(sectioned: false) do
+          = form_for(Admin.new, url: admin_log_in_path, builder: Polaris::FormBuilder, html:{data: { turbo: false }} ) do |f|
+            = render "shared/flash"
+            = polaris_spacer(vertical: :loose)
+            = f.errors_summary
+            = f.polaris_text_field :username, label: "Admin Username", required: true, style:"margin-bottom:20px;"
+            = f.polaris_text_field :password, label: "Admin Password", type: :password, required: true
+            div style="margin-top:20px;" 
+              = polaris_button(submit: true, primary: true, full_width: true, style:"min-height:2.4rem; font-size:1.6rem !important; font-weight:bold", class:"Polaris-Button__Content") { "Login" }
