@@ -22,6 +22,8 @@ const initRecordVideo = () => {
   startButton.style.display = 'none';
   preview.style.display = 'none';
 
+  let recordingAttempts = 0;
+  const MAX_RECORDING_ATTEMPTS = 3;
   // If answer already exists, exit
   if (answerInput?.value.length > 0) {
     prefix.innerHTML = '<strong>Answer already submitted</strong>';
@@ -45,46 +47,53 @@ const initRecordVideo = () => {
     new Promise(resolve => stopButton.addEventListener("click", resolve, { once: true }));
 
   const startRecording = (stream) => {
-    console.log("Starting video recording...");
-    const recorder = new MediaRecorder(stream);
-    const chunks = [];
-    recorder.ondataavailable = event => chunks.push(event.data);
-    recorder.start();
-
-    // Reset and start the timer
-    secondsElapsed = 0;
-    secondsDisplay.textContent = `Recording starting...`;
-    timerInterval = setInterval(() => {
-      secondsElapsed++;
-      secondsDisplay.textContent = `Recording: ${secondsElapsed} seconds`;
-    }, 1000);
-
-    // Check duration and auto-submit if valid
-    if (duration && !isNaN(duration) && parseInt(duration) > 0) {
-      const totalSeconds = parseInt(duration) * 60; // Convert minutes to seconds
-      console.log("Auto-submit will happen in", totalSeconds, "seconds.");
-  
-      setTimeout(() => {
-        // Stop recording and auto-submit
-        stopButton.click();
-        // submitButton.click();  // Automatically trigger form submission after recording is stopped
-      }, totalSeconds * 1000);
+    if (recordingAttempts >= MAX_RECORDING_ATTEMPTS) {
+      alert("You have reached the maximum number of recording attempts.");
+      return;
     }
+    else {
+      recordingAttempts++;
+      console.log("Starting video recording...");
+      const recorder = new MediaRecorder(stream);
+      const chunks = [];
+      recorder.ondataavailable = event => chunks.push(event.data);
+      recorder.start();
 
-    const stopped = new Promise((resolve, reject) => {
-      recorder.onstop = () => {
-        clearInterval(timerInterval); // Stop the timer
-        resolve();
-      };
-      recorder.onerror = event => reject(event.name);
-    });
+      // Reset and start the timer
+      secondsElapsed = 0;
+      secondsDisplay.textContent = `Recording starting...`;
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        secondsDisplay.textContent = `Recording: ${secondsElapsed} seconds`;
+      }, 1000);
 
-    const recordingStopped = waitForStop().then(() => {
-      stopVideoStream();
-      if (recorder.state === "recording") recorder.stop();
-    });
+      // Check duration and auto-submit if valid
+      if (duration && !isNaN(duration) && parseInt(duration) > 0) {
+        const totalSeconds = parseInt(duration) * 60; // Convert minutes to seconds
+        console.log("Auto-submit will happen in", totalSeconds, "seconds.");
+    
+        setTimeout(() => {
+          // Stop recording and auto-submit
+          stopButton.click();
+          // submitButton.click();  // Automatically trigger form submission after recording is stopped
+        }, totalSeconds * 1000);
+      }
 
-    return Promise.all([stopped, recordingStopped]).then(() => chunks);
+      const stopped = new Promise((resolve, reject) => {
+        recorder.onstop = () => {
+          clearInterval(timerInterval); // Stop the timer
+          resolve();
+        };
+        recorder.onerror = event => reject(event.name);
+      });
+
+      const recordingStopped = waitForStop().then(() => {
+        stopVideoStream();
+        if (recorder.state === "recording") recorder.stop();
+      });
+
+      return Promise.all([stopped, recordingStopped]).then(() => chunks);
+    }
   };
 
   const uploadToS3 = (videoBlob) => {
@@ -109,39 +118,45 @@ const initRecordVideo = () => {
 
   startButton.addEventListener("click", () => {
     // console.log("----------- start button --------------");
-    startButton.style.display = 'none';
-    stopButton.style.display = 'block';
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-      .then(stream => {
-        liveVideo.srcObject = stream;
-        return new Promise(resolve => (liveVideo.onplaying = resolve));
-      })
-      .then(() => startRecording(liveVideo.srcObject))
-      .then(recordedChunks => {
-        const recordedBlob = new Blob(recordedChunks, { type: "video/mp4" });
-        // console.log("Recorded Blob:", recordedBlob);
-        startButton.style.display = 'block';
-        stopButton.style.display = 'none';
-        secondsDisplay.textContent = `To start recording again, please click the button below.`;
-        uploadToS3(recordedBlob); // Upload the video to s3
-        const videoURL = URL.createObjectURL(recordedBlob);
-        const videoPreviewElement = document.createElement('video');
-        videoPreviewElement.src = videoURL;
-        videoPreviewElement.controls = true;
-        videoPreviewElement.width = 300; // Set preview width
-        videoPreviewElement.height = 200; // Set preview height
+    if (recordingAttempts >= MAX_RECORDING_ATTEMPTS) {
+      alert("You have reached the maximum number of recording attempts.");
+      return;
+    }
+    else {
+      startButton.style.display = 'none';
+      stopButton.style.display = 'block';
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(stream => {
+          liveVideo.srcObject = stream;
+          return new Promise(resolve => (liveVideo.onplaying = resolve));
+        })
+        .then(() => startRecording(liveVideo.srcObject))
+        .then(recordedChunks => {
+          const recordedBlob = new Blob(recordedChunks, { type: "video/mp4" });
+          // console.log("Recorded Blob:", recordedBlob);
+          startButton.style.display = 'block';
+          stopButton.style.display = 'none';
+          secondsDisplay.textContent = `To start recording again, please click the button below.`;
+          uploadToS3(recordedBlob); // Upload the video to s3
+          const videoURL = URL.createObjectURL(recordedBlob);
+          const videoPreviewElement = document.createElement('video');
+          videoPreviewElement.src = videoURL;
+          videoPreviewElement.controls = true;
+          videoPreviewElement.width = 300; // Set preview width
+          videoPreviewElement.height = 200; // Set preview height
 
-        // Append the preview video element to the preview container
-        recorded.innerHTML = '<strong>Preview</strong>';
-        recorded.appendChild(videoPreviewElement);
+          // Append the preview video element to the preview container
+          recorded.innerHTML = '<strong>Preview</strong>';
+          recorded.appendChild(videoPreviewElement);
 
-        // Optionally, auto-play the preview video
-        videoPreviewElement.play();
-      })
-      .catch(error => {
-        console.error("Error with video recording:", error);
-        // alert("Could not start the video recording. Check your permissions or settings.");
-      });
+          // Optionally, auto-play the preview video
+          videoPreviewElement.play();
+        })
+        .catch(error => {
+          console.error("Error with video recording:", error);
+          // alert("Could not start the video recording. Check your permissions or settings.");
+        });
+    }
   });
 
   // Delayed initialization for Start recording
