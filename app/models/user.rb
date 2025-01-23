@@ -19,7 +19,7 @@ class User < ApplicationRecord
   private
 
   def domain_validation
-    return if teacher?
+    # return if teacher?
 
     errors.add(:email, "domain not allowed, must be @students.koi.edu.au") unless email.include?("@students.koi.edu.au")
   end

@@ -16,6 +16,11 @@ class Teachers::QuizzesController < ApplicationController
   def create
     # quiz.start_time = Time.now
     # quiz.end_time = Time.now
+    # start_time = Time.parse("#{quiz_params[:due_date]} #{Time.parse(quiz_params[:start_time]).strftime('%H:%M')}")
+    # end_time = Time.parse("#{quiz_params[:due_date]} #{Time.parse(quiz_params[:end_time]).strftime('%H:%M')}")
+
+    # quiz_params[:start_time] = start_time
+    # quiz_params[:end_time] = end_time
     quiz.created_by_id = @current_user.id
 
     if quiz.save
@@ -25,8 +30,9 @@ class Teachers::QuizzesController < ApplicationController
         format.html { redirect_to teachers_quizzes_path }
       end
     else
-      flash[:error] = quiz.errors.full_messages
-      render :new
+      flash[:error] = quiz.errors.full_messages.join(", ")
+      # render :new
+      redirect_to teachers_quizzes_path
     end
   end
 

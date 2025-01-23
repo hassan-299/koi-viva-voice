@@ -103,5 +103,24 @@ class Students::StudentsController < ApplicationController
       flash[:error] = "You have already tried to submit this quiz"
       redirect_to students_quizzes_path
     end
+
+    if params[:id].present?
+      if Quiz.find(params[:id]).due_date == Date.today
+        time = Time.parse(Quiz.find(params[:id]).end_time.to_s)
+        quiz_hour = time.hour
+        quiz_minute = time.min
+
+        time = Time.current
+        hour = time.hour
+        minute = time.min
+        if hour > quiz_hour || (hour == quiz_hour && minute > quiz_minute)
+          flash[:error] = "You have missed the deadline for this quiz"
+          redirect_to students_quizzes_path
+        end
+      elsif Quiz.find(params[:id]).due_date < Date.today
+        flash[:error] = "You have missed the deadline for this quiz"
+        redirect_to students_quizzes_path
+      end
+    end
   end
 end

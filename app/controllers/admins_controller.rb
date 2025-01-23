@@ -14,7 +14,7 @@ class AdminsController < ApplicationController
       redirect_to "/admin"
     else
       flash[:error] = "Invalid username or password"
-      redirect_to sign_in_path
+      redirect_to admin_sign_in_path
     end
   end
 

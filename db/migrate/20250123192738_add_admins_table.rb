@@ -7,6 +7,7 @@ class AddAdminsTable < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    Admin.create(username: 'admin', password: 'secret!')
+    Admin.find_or_create_by(username: 'admin', password: 'secret!')
+    Organization.find_or_create_by(name: 'KOI VIVA Voce', subdomain: 'students.koi.edu.au')
   end
 end
