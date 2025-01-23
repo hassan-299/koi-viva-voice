@@ -7,6 +7,12 @@ class Teachers::QuizzesController < ApplicationController
   def index
   end
 
+  def edit
+    if quiz.started?
+      flash[:error] = "This quiz is already started."
+    end
+  end
+
   def create
     # quiz.start_time = Time.now
     # quiz.end_time = Time.now

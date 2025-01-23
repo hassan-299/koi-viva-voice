@@ -16,6 +16,7 @@ class Students::StudentsController < ApplicationController
 
   def attempt_quiz
     @quiz = Quiz.find(params[:id])
+    @quiz.update_column(:started, true)
   end
 
   def submit_quiz

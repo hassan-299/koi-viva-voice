@@ -41,6 +41,7 @@
                 = polaris_horizontal_stack(gap: '1')  
                   = button_to teachers_quiz_path(row), method: :get do
                     = polaris_icon name: "ViewIcon"
+                  / - unless row.started?
                   = button_to edit_teachers_quiz_path(row), method: :get, data: { turbo_frame: "modal" } do
                     = polaris_icon name: "EditIcon"
                   = button_to teachers_quiz_path(row), method: :delete, data: { turbo: false }, onclick: "return confirm('Are you sure you want to delete this quiz?')" do
