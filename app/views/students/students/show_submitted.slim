@@ -40,9 +40,9 @@
               - if question.answers&.where(student_id:)&.last&.answer
                 - if question.answers&.where(student_id:)&.last&.mark
                   - question_card.with_section(title: "Question Rating", subdued: true) do
-                    = "Rating: #{question.answers&.where(student_id:)&.last&.mark&.number}"
+                    = "Rating: #{question.answers&.where(student_id:)&.last&.mark&.number} / 10"
                     br
-                    = "Comment: #{question.answers&.where(student_id:)&.last&.mark&.comment}"
+                    = "Comment: #{question.answers&.where(student_id:)&.last&.mark&.comment.present? ? question.answers&.where(student_id:)&.last&.mark&.comment : "N/A"}"
                   / = form_with url: teachers_mark_question_path(question.answers&.last) do |f|
                   / = form_with url: teachers_mark_question_path(question.answers&.where(student_id: @submission.user_id)&.last), builder: Polaris::FormBuilder, html: { data: { turbo: false, target: "_top", controller: "polaris-modal form", action: "turbo:submit-end->form#closeModal" } } do |f|
                     = polaris_form_layout do |form_layout|
