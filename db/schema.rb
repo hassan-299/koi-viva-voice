@@ -96,7 +96,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_212947) do
     t.string "title", null: false
     t.text "description"
     t.integer "status", default: 0, null: false
-    t.date "due_date", default: "2024-11-15", null: false
+    t.date "due_date", default: "2025-01-24", null: false
     t.time "start_time", null: false
     t.time "end_time", null: false
     t.datetime "created_at", null: false

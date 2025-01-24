@@ -110,7 +110,8 @@ class Students::StudentsController < ApplicationController
         quiz_hour = time.hour
         quiz_minute = time.min
 
-        time = Time.current
+        # time = Time.current
+        time = Time.now
         hour = time.hour
         minute = time.min
         if hour > quiz_hour || (hour == quiz_hour && minute > quiz_minute)

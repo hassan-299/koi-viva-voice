@@ -17,7 +17,8 @@
           - form_layout.with_group do |group|
             - group.with_item
               = f.label :start_time
-              = f.text_field :start_time, value: (quiz.start_time.nil? ? Time.current.strftime("%H:%M") : quiz.start_time.strftime("%H:%M")), class: "flatpickr-input", placeholder: "Time", data: { controller: "flatpickr", flatpickr_enable_time: true, flatpickr_no_calendar: true, flatpickr_date_format: "h:i K", flatpickr_alt_input: false }, disabled: started
+              = f.text_field :start_time, value: (quiz.start_time.nil? ? Time.now.strftime("%H:%M") : quiz.start_time.strftime("%H:%M")), class: "flatpickr-input", placeholder: "Time", data: { controller: "flatpickr", flatpickr_enable_time: true, flatpickr_no_calendar: true, flatpickr_date_format: "h:i K", flatpickr_alt_input: false }, disabled: started
+              / = f.text_field :start_time, value: (quiz.start_time.nil? ? Time.current.strftime("%H:%M") : quiz.start_time.strftime("%H:%M")), class: "flatpickr-input", placeholder: "Time", data: { controller: "flatpickr", flatpickr_enable_time: true, flatpickr_no_calendar: true, flatpickr_date_format: "h:i K", flatpickr_alt_input: false }, disabled: started
             - group.with_item
               = f.label :end_time
               = f.text_field :end_time, value: (quiz.end_time.nil? ? 15.minutes.from_now.strftime("%H:%M") : quiz.end_time.strftime("%H:%M")), class: "flatpickr-input", placeholder: "Time", data: { controller: "flatpickr", flatpickr_enable_time: true, flatpickr_no_calendar: true, flatpickr_date_format: "h:i K", flatpickr_alt_input: false }, disabled: started
