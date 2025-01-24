@@ -99,9 +99,9 @@ class Students::StudentsController < ApplicationController
     if params[:id].present? && Quiz.find(params[:id]).is_submitted?(@current_user.id)
       flash[:error] = "You have already submitted this quiz"
       redirect_to students_submitted_quizzes_path
-    elsif VideoRequest.find_by(student_id: @current_user.id, quiz_id: params[:id]).present?
-      flash[:error] = "You have already tried to submit this quiz"
-      redirect_to students_quizzes_path
+    # elsif VideoRequest.find_by(student_id: @current_user.id, quiz_id: params[:id]).present?
+    #   flash[:error] = "You have already tried to submit this quiz"
+    #   redirect_to students_quizzes_path
     end
 
     if params[:id].present?
