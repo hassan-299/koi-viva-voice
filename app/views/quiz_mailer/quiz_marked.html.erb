@@ -33,6 +33,10 @@
     <p>
       Your quiz "<strong><%= @quiz.title %></strong>" has been marked by your teacher. Please visit the submission page on the website to view the results.
     </p>
+    <h3>Feedback Highlights:</h3>
+    <% @quiz.questions.each do |question| %>
+      <p><b>Question <%= question.id %>: </b><%= question.answers.where(student_id: @student.id).last&.mark&.comment.blank? ? "No comment." : question.answers.where(student_id: @student.id).last&.mark&.comment %></p>
+    <% end %>
     <p>
       Keep up the great work, and let us know if you have any questions.
     </p>
