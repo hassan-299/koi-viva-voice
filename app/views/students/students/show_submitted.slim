@@ -60,4 +60,5 @@
               / - question_card.with_section(title: "Correct Answer", subdued: true) do
                 p.correct-answer= "No correct answer provided."
   
-  - page.with_primary_action(url: students_quizzes_path, icon_name: "CheckCircleIcon") { "Return to Dashboard" }
+  - unless Submission.find_by(user_id: @current_user.id, quiz_id: @quiz.id).present?
+    - page.with_primary_action(url: students_submitted_quizzes_path(id: @quiz.id), icon_name: "CheckCircleIcon") { "Submit Quiz Now" }

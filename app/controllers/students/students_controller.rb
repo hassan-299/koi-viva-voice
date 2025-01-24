@@ -17,6 +17,12 @@ class Students::StudentsController < ApplicationController
   def attempt_quiz
     @quiz = Quiz.find(params[:id])
     @quiz.update_column(:started, true)
+
+    if params[:start].present? && VideoRequest.find_by(student_id: @current_user.id, quiz_id: @quiz.id).present?
+      flash[:error] = "You have already tried to submit this quiz"
+      redirect_to students_quizzes_path
+      return
+    end
     @video_request = VideoRequest.find_or_create_by(student_id: @current_user.id, quiz_id: @quiz.id)
   end
 
@@ -31,6 +37,10 @@ class Students::StudentsController < ApplicationController
   end
 
   def submitted_quizzes
+    if params[:id].present?
+      Submission.create(user_id: @current_user.id, status: "completed", quiz_id: params[:id])
+      flash[:success] = "Quiz submitted successfully."
+    end
     # @quizzes = Quiz.where(status: "completed")
     # @quizzes = Quiz.joins(:submissions).where(submissions: { status: "completed", user_id: @current_user.id })
     @quizzes = Quiz.where(id: VideoRequest.where(student_id: @current_user.id).pluck(:quiz_id))
@@ -68,6 +78,17 @@ class Students::StudentsController < ApplicationController
     if params[:id].present?
       @quiz = Quiz.find(params[:id])
       # @quiz.pending!
+
+      q_count = @quiz.questions.count
+      v_count = 0
+      @quiz.questions.each do |question|
+        v_count += 1 if VideoRequest.find_by(student_id: @current_user.id, question_id: question.id)
+      end
+      unless q_count.eql?(v_count)
+        flash[:error] = "Please attempt all the questions before submitting."
+        redirect_to students_attemptting_quiz_path(@quiz, @quiz.questions&.last)
+        return
+      end
       @quiz.submissions.create(user_id: @current_user.id, status: "completed") unless @quiz.is_submitted?(@current_user.id)
       flash[:success] = "Quiz submitted successfully."
     else
@@ -99,10 +120,10 @@ class Students::StudentsController < ApplicationController
     if params[:id].present? && Quiz.find(params[:id]).is_submitted?(@current_user.id)
       flash[:error] = "You have already submitted this quiz"
       redirect_to students_submitted_quizzes_path
+    end
     # elsif VideoRequest.find_by(student_id: @current_user.id, quiz_id: params[:id]).present?
     #   flash[:error] = "You have already tried to submit this quiz"
     #   redirect_to students_quizzes_path
-    end
 
     if params[:id].present?
       if Quiz.find(params[:id]).due_date == Date.today

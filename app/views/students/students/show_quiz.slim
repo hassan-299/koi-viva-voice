@@ -7,7 +7,7 @@ ruby:
   - page.with_title_metadata do
     = polaris_badge(status: :success) { quiz.status }
   - unless quiz.is_submitted?(@current_user.id)
-    - page.with_primary_action(url: students_attempt_quiz_path(quiz), icon_name: "BookIcon") { "Attempt Quiz" }
+    - page.with_primary_action(url: students_attempt_quiz_path(quiz, start: true), icon_name: "BookIcon") { "Attempt Quiz" }
   = polaris_card(title: quiz.title) do
     p.overflow-auto
       | #{quiz.description}

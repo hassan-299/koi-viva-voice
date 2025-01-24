@@ -15,7 +15,7 @@
     = turbo_frame_tag "answer_section"
       = render "answer_section", question: question, quiz: quiz, card: card
 
-    - card.with_primary_footer_action(url: students_submitted_path(id: quiz.id), icon_name: "CheckIcon", data: { turbo: false }) { "Submit" } if question&.is_last?
+    - card.with_primary_footer_action(url: students_submitted_path(id: quiz.id), icon_name: "CheckIcon", data: { turbo: false, confirm: "Are you sure that you want to submit this quiz?" }) { "Submit" } if question&.is_last?
     - card.with_primary_footer_action(url: students_attemptting_quiz_path(quiz, question.next_question), icon_name: "ArrowRightIcon") { "Next Question" } unless question&.is_last?
     - card.with_secondary_footer_action(url: students_attemptting_quiz_path(quiz, question.previous_question), icon_name: "ArrowLeftIcon") { "Previous Question" } unless question&.is_first?
     / - card.with_secondary_footer_action(url: "#", icon_name: "BackspaceIcon") { "Dismiss" }

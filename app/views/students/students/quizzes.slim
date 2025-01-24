@@ -1,9 +1,11 @@
 = polaris_page(title: "Quizzes", subtitle: "List of all quizzes", full_width: true) do | polaris_page |
+  - polaris_page.with_custom_primary_action do
   - polaris_page.with_custom_primary_action do 
     / = polaris_horizontal_stack(gap: '2') do |stack|
       = polaris_button(primary: true, icon_name: "PlusIcon", url: new_teachers_quiz_path, data: { turbo_frame: "modal" }) { "Add Quiz" }
       / = polaris_button(primary: true, icon_name: "PlusIcon", url: new_teachers_quiz_path, data: { turbo: true, turbo_frame: :modal } ) { "Add Quiz" }
 
+  = polaris_layout do |layout|
   = polaris_layout do |layout| 
     - layout.with_section do
       = turbo_frame_tag "flash"
@@ -42,8 +44,8 @@
                   = button_to students_show_quiz_path(row), method: :get do
                     = polaris_icon name: "ViewIcon"
                   - video_request = VideoRequest.find_by(student_id: @current_user.id, quiz_id: row.id)
-                  - unless row.is_submitted?(@current_user.id) || video_request.present?
-                    = button_to students_submit_quiz_path(row), method: :get do
+                  - unless row.is_submitted?(@current_user.id)# || video_request.present?
+                    = button_to students_attempt_quiz_path(row), method: :get, params: { start: true } do
                       = polaris_icon name: "BookIcon"
                   / = button_to teachers_quiz_path(row), method: :delete, data: { turbo: false }, onclick: "return confirm('Are you sure you want to delete this quiz?')" do
                     = polaris_icon name: "DeleteIcon"
