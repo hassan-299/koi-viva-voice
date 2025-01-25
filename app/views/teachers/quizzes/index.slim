@@ -38,7 +38,9 @@
                 = row.questions.count || 0 
 
               - table.with_column "Action" do |row|
-                = polaris_horizontal_stack(gap: '1')  
+                = polaris_horizontal_stack(gap: '1')
+                  / = polaris_link(url: students_show_quiz_path(row), method: :get, title: "View Quiz") do
+                    = polaris_icon name: "ViewIcon"
                   = button_to teachers_quiz_path(row), method: :get do
                     = polaris_icon name: "ViewIcon"
                   / - unless row.started?
